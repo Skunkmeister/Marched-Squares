@@ -11,34 +11,8 @@ header {
     display: block;
 }
 
-header ul{
-    height: inherit;
-    list-style-type: none;
-    margin: 0px;
-    align-items: center;
-    padding: 0px;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-content:  center;
-    text-align: center;
-}
-header ul li{
-    flex-grow: 2;
-    display: block;
-    border-radius: 0px;
-    float: inherit;
-    color: rgb(54, 54, 54);
-    margin: auto 20px;
-    font-size: 1.2rem;
-}
 
-.vertical-bar {
-    height: inherit;
-    width: 4px;
-    background-color: lightcoral;
-    float: inherit;
-    overflow: hidden;
-    flex-grow: 0;
-    flex-shrink: 0;
+canvas{
+    width: 100%;
+    height: 100%;
 }
