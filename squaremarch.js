@@ -1,18 +1,20 @@
-var canvas = document.querySelector('canvas');
+let canvas = document.querySelector('canvas');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 let c = canvas.getContext('2d');
 console.log(canvas);
 
 let gridScaleDivider = 20;
-let xResolutionGLOBAL = canvas.width / (gridScaleDivider * 2);
-let yResolutionGLOBAL = canvas.height / (gridScaleDivider * 2);
+let xResolutionGLOBAL = Math.ceil(canvas.width / (gridScaleDivider * 2));
+let yResolutionGLOBAL = Math.ceil(canvas.height / (gridScaleDivider * 2));
+console.log("xResolutionGLOBAL: " + xResolutionGLOBAL);
+console.log("yResolutionGLOBAL: " + yResolutionGLOBAL);
 
 
 
 function displayGrid(xResolution, yResolution, theArray) {
-    for (var xi = 0; xi < xResolution; xi++) {
-        for (var yi = 0; yi < yResolution; yi++) {
+    for (let xi = 0; xi < xResolution; xi++) {
+        for (let yi = 0; yi < yResolution; yi++) {
             drawCircle(xi * gridScaleDivider * 2, yi * gridScaleDivider * 2, 4, "rgb(" + theArray[xi][yi] * 255 + "," + theArray[xi][yi] * 255 + "," + theArray[xi][yi] * 255 + ")", theArray[xi][yi]);
         }
     }
@@ -35,32 +37,40 @@ function drawCircle(centerX, centerY, radius = 5, strokeStyle = "rgb(99,0,0)", i
     }
     c.stroke();
 }
-function randomArray() {
+function randomArray(buffer) {
 
-    var myLocalArray = makeArray(canvas.height, canvas.width);
-    for (var row = 0; row < canvas.height; row++) {
-        for (var column = 0; column < canvas.width; column++) {
+    let myLocalArray = makeArray(yResolutionGLOBAL+buffer, xResolutionGLOBAL
+        +buffer);
+
+    for (let row = 0; row < yResolutionGLOBAL+buffer; row++) {
+        for (let column = 0; column < xResolutionGLOBAL+buffer; column++) {
             myLocalArray[row][column] = Math.random();
         }
     }
+
+    console.log("The RandomArray:")
+    console.log(myLocalArray)
     return myLocalArray;
 }
 function makeArray(rows, columns) {
     let myArray = new Array(rows);
-    for (var i = 0; i < rows; i++) {
+    for (let i = 0; i < rows; i++) {
         myArray[i] = new Array(columns);
     }
     return myArray;
 }
 function processNoiseArray(myArray, power=1.2) {
-    myProcessedArray = makeArray(myArray.length - 2, myArray[0].length - 2)
-        for (var row = 1; row < myArray.length - 1; row++) {
-            for (var column = 1; column < myArray[0].length - 1; column++) {
+    myProcessedArray = makeArray(yResolutionGLOBAL-2, xResolutionGLOBAL-2);
+    console.log("myArray in processNoiseArray(): ")
+    console.log(myArray);
+        for (let row = 1; row < myArray.length - 1; row++) {
+            for (let column = 1; column < myArray[0].length - 1; column++) {
                 myProcessedArray[row - 1][column - 1] = Math.round(Math.pow((myArray[row + 1][column] + myArray[row - 1][column] + myArray[row][column + 1] + myArray[row][column - 1] + myArray[row][column]) / 5, power));
             }
         }
     return myProcessedArray;
 }
+// Void, resamples at set scale
 class vector2D {
     constructor(definedX, definedY) {
         this.x = definedX;
@@ -73,8 +83,8 @@ function displaySquareMarch(myHeightField) {
     let pos2 = new vector2D();
     let pos3 = new vector2D();
     let pos4 = new vector2D();
-    for (var row = 0; row < myHeightField.length; row++) {
-        for (var column = 0; column < myHeightField.length; column++) {
+    for (let row = 0; row < myHeightField.length; row++) {
+        for (let column = 0; column < myHeightField.length; column++) {
             
             console.log(myHeightField);
             console.log(evaluateSquare(myHeightField, row, column));
@@ -91,7 +101,6 @@ function displaySquareMarch(myHeightField) {
         }
     }
 }
-
 function evaluateSquare(theHeightField, row, column) {
     return (theHeightfield[row, column] * 1 + theHeightfield[row, column + 1] * 2 + theHeightfield[row + 1, column + 1] * 4 + theHeightfield[row + 1, column] * 8);
 
@@ -100,7 +109,7 @@ function evaluateSquare(theHeightField, row, column) {
 
 
 
-let heightField = processNoiseArray(randomArray(),1);
+let heightField = processNoiseArray(randomArray(2),1);
 displayGrid(xResolutionGLOBAL, yResolutionGLOBAL, heightField);
 displaySquareMarch(heightField);
 
