@@ -7,10 +7,24 @@ console.log(canvas);
 let gridScaleDivider = 20;
 let xResolutionGLOBAL = Math.ceil(canvas.width / (gridScaleDivider * 2));
 let yResolutionGLOBAL = Math.ceil(canvas.height / (gridScaleDivider * 2));
-console.log("xResolutionGLOBAL: " + xResolutionGLOBAL);
-console.log("yResolutionGLOBAL: " + yResolutionGLOBAL);
 
 
+function increaseResolution(){
+    if(gridScaleDivider > 5){
+        gridScaleDivider--;
+    xResolutionGLOBAL = Math.ceil(canvas.width / (gridScaleDivider * 2));
+    yResolutionGLOBAL = Math.ceil(canvas.height / (gridScaleDivider * 2));
+    updateView();
+    }
+}
+function decreaseResolution(){
+    if(gridScaleDivider < 25){
+        gridScaleDivider++;
+    xResolutionGLOBAL = Math.ceil(canvas.width / (gridScaleDivider * 2));
+    yResolutionGLOBAL = Math.ceil(canvas.height / (gridScaleDivider * 2));
+    updateView();
+    }
+}
 
 function displayGrid(xResolution, yResolution, theArray) {
     for (let column = 0; column < xResolution; column++) {
@@ -19,7 +33,7 @@ function displayGrid(xResolution, yResolution, theArray) {
         }
     }
 }
-function drawLine(start, end, lineWidth = 3, strokeStyle = "rgb(99,0,0)") {
+function drawLine(start, end, lineWidth = 2, strokeStyle = "rgb(145, 238, 145)") {
     c.beginPath();
     c.moveTo(start.x, start.y);
     c.lineTo(end.x, end.y);
@@ -29,6 +43,7 @@ function drawLine(start, end, lineWidth = 3, strokeStyle = "rgb(99,0,0)") {
 }
 function drawCircle(centerX, centerY, radius = 5, strokeStyle = "rgb(99,0,0)", isFull) {
     c.beginPath();
+    c.lineWidth = .4;
     c.arc(centerX, centerY, radius, 0, 2 * Math.PI);
     c.strokeStyle = strokeStyle;
     c.fillStyle = "rgb(255,255,255)";
@@ -36,11 +51,6 @@ function drawCircle(centerX, centerY, radius = 5, strokeStyle = "rgb(99,0,0)", i
         c.fill()
     }
     c.stroke();
-}
-function drawText(position, text){
-    c.beginPath
-    c.font = "12px Arial";
-    c.strokeText(text,position.x, position.y)
 }
 function randomArray(buffer) {
 
@@ -145,9 +155,10 @@ function evaluateSquare(theHeightField, row, column) {
     return (theHeightField[row][column]*1 + theHeightField[row][column + 1] * 2 + theHeightField[row + 1][column + 1] * 4 + theHeightField[row + 1][column] * 8);
 
 }
-
-
-
+function updateView(){
+console.log("xResolutionGLOBAL: " + xResolutionGLOBAL);
+console.log("yResolutionGLOBAL: " + yResolutionGLOBAL);
+c.clearRect(0,0, canvas.width, canvas.height);
 let myRandomArray = randomArray(2); //Successfully produces a field of length/width globalResolutionX/Y, with a buffe of 2 columns and rows
 console.log("The RandomArray: ");
 console.log(myRandomArray);
@@ -156,4 +167,6 @@ console.log("The randomArray after processing: ")
 console.log(myRandomArray); 
 displayGrid(xResolutionGLOBAL, yResolutionGLOBAL, myRandomArray); //SUCCESS
 displaySquareMarch(myRandomArray);
+}
 
+updateView();
