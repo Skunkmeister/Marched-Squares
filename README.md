@@ -1,5 +1,5 @@
 ## Title
-Marched-Squares Visualization
+# Marched-Squares Visualization
 
 ## Project Description
 Marched-Squares is a JavaScript implementation of the square marching algorithm, created as a practice exercise using the HTML5 Canvas element. The algorithm visualizes data by rendering patterns and shapes based on the given input.
